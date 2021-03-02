@@ -5,17 +5,45 @@ import (
 	"io/ioutil"
 	"log"
 
+	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 	simplepb "github.com/stephenjlovell/protobuf-example-go/src/simple"
 )
 
 func main() {
-	readWriteDemo()
+	sm := makeSimple()
+	readWriteDemo(sm)
+	serializeDemo(sm)
 }
 
-func readWriteDemo() {
+func serializeDemo(pb proto.Message) {
+	str, _ := toJSON(pb)
+	fmt.Println(str)
+	sm2 := &simplepb.SimpleMessage{}
+	fromJSON(str, sm2)
+	fmt.Println("successfully created object:", sm2)
+}
+
+func toJSON(pb proto.Message) (string, error) {
+	m := jsonpb.Marshaler{}
+	str, err := m.MarshalToString(pb)
+	if err != nil {
+		log.Fatalln("could not serialize object to JSON", err)
+		return "", err
+	}
+	return str, nil
+}
+
+func fromJSON(str string, pb proto.Message) error {
+	if err := jsonpb.UnmarshalString(str, pb); err != nil {
+		log.Fatalln("could not unserialize object from JSON", err)
+		return err
+	}
+	return nil
+}
+
+func readWriteDemo(sm proto.Message) {
 	fname := "simple.bin"
-	sm := doSimple()
 	writeToFile(fname, sm)
 	sm2 := &simplepb.SimpleMessage{}
 	readFromFile(fname, sm2)
@@ -50,7 +78,7 @@ func readFromFile(fname string, pb proto.Message) error {
 	return nil
 }
 
-func doSimple() *simplepb.SimpleMessage {
+func makeSimple() *simplepb.SimpleMessage {
 	sm := simplepb.SimpleMessage{
 		Id:         12345,
 		IsSimple:   true,
