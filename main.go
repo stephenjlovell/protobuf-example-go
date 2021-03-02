@@ -7,6 +7,7 @@ import (
 
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
+	enumpb "github.com/stephenjlovell/protobuf-example-go/src/enum_example"
 	simplepb "github.com/stephenjlovell/protobuf-example-go/src/simple"
 )
 
@@ -18,7 +19,12 @@ func main() {
 }
 
 func enumDemo() {
-	// em := &enumpb.EnumMessage{}
+	em := enumpb.EnumMessage{
+		Id:           42,
+		DayOfTheWeek: enumpb.DayOfTheWeek_FRIDAY,
+	}
+	fmt.Println(em)
+	fmt.Printf("yay, it's %s\n", em.GetDayOfTheWeek().String())
 }
 
 func serializeDemo(pb proto.Message) {
