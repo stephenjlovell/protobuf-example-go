@@ -7,6 +7,7 @@ import (
 
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
+	complexpb "github.com/stephenjlovell/protobuf-example-go/src/complex"
 	enumpb "github.com/stephenjlovell/protobuf-example-go/src/enum_example"
 	simplepb "github.com/stephenjlovell/protobuf-example-go/src/simple"
 )
@@ -16,6 +17,32 @@ func main() {
 	readWriteDemo(sm)
 	serializeDemo(sm)
 	enumDemo()
+	complexDemo()
+}
+
+func complexDemo() {
+	com := complexpb.ComplexMessage{
+		OneDummy: &complexpb.DummyMessage{
+			Id:   1,
+			Name: "main message",
+		},
+		MultipleDummy: []*complexpb.DummyMessage{
+			{
+				Id:   2,
+				Name: "message 2",
+			},
+			{
+				Id:   3,
+				Name: "message 3",
+			},
+			{
+				Id:   4,
+				Name: "message 4",
+			},
+		},
+	}
+
+	fmt.Println(com)
 }
 
 func enumDemo() {
