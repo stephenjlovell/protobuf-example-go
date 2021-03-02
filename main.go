@@ -14,6 +14,11 @@ func main() {
 	sm := makeSimple()
 	readWriteDemo(sm)
 	serializeDemo(sm)
+	enumDemo()
+}
+
+func enumDemo() {
+	// em := &enumpb.EnumMessage{}
 }
 
 func serializeDemo(pb proto.Message) {
