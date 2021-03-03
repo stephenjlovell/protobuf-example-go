@@ -7,6 +7,7 @@ import (
 
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
+	tutorial "github.com/stephenjlovell/protobuf-example-go/src/addressbook"
 	complexpb "github.com/stephenjlovell/protobuf-example-go/src/complex"
 	enumpb "github.com/stephenjlovell/protobuf-example-go/src/enum_example"
 	simplepb "github.com/stephenjlovell/protobuf-example-go/src/simple"
@@ -18,6 +19,36 @@ func main() {
 	serializeDemo(sm)
 	enumDemo()
 	complexDemo()
+	personDemo()
+}
+
+func personDemo() {
+	pb := tutorial.AddressBook{
+		People: []*tutorial.Person{
+			makePerson(1, "Willow"),
+			makePerson(1, "Xander"),
+			makePerson(1, "Tara"),
+		},
+	}
+	fmt.Println(pb)
+}
+
+func makePerson(id int32, name string) *tutorial.Person {
+	return &tutorial.Person{
+		Id:    id,
+		Name:  name,
+		Email: fmt.Sprintf("%s@example.com", name),
+		Phones: []*tutorial.Person_PhoneNumber{
+			{
+				Number: "111-222-3333",
+				Type:   tutorial.Person_MOBILE,
+			},
+			{
+				Number: "111-222-5555",
+				Type:   tutorial.Person_WORK,
+			},
+		},
+	}
 }
 
 func complexDemo() {
